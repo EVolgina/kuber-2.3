@@ -1,8 +1,8 @@
 # Задание 1. Создать Deployment приложения и решить возникшую проблему с помощью ConfigMap. Добавить веб-страницу
-- Создать Deployment приложения, состоящего из контейнеров nginx и multitool.[deployment](https://github.com/EVolgina/kuber-2.3/blob/main/deployment.yaml). [service](). [configmap](https://github.com/EVolgina/kuber-2.3/blob/main/cm.yaml)
+- Создать Deployment приложения, состоящего из контейнеров nginx и multitool.[deployment](https://github.com/EVolgina/kuber-2.3/blob/main/deployment.yaml). [service](https://github.com/EVolgina/kuber-2.3/blob/main/service.yaml). [configmap](https://github.com/EVolgina/kuber-2.3/blob/main/cm.yaml)
 - Решить возникшую проблему с помощью ConfigMap.
 - Продемонстрировать, что pod стартовал и оба конейнера работают.
-- Сделать простую веб-страницу и подключить её к Nginx с помощью ConfigMap. Подключить Service и показать вывод curl или в браузере.
+- Сделать простую веб-страницу и подключить её к Nginx с помощью ConfigMap. Подключить Service и показать вывод curl или в браузере.[webpage]()
 - Предоставить манифесты, а также скриншоты или вывод необходимых команд.
 ```
 vagrant@vagrant:~/kube/zd8$ kubectl get deployment
