@@ -2,7 +2,7 @@
 - Создать Deployment приложения, состоящего из контейнеров nginx и multitool.[deployment](https://github.com/EVolgina/kuber-2.3/blob/main/deployment.yaml). [service](https://github.com/EVolgina/kuber-2.3/blob/main/service.yaml). [configmap](https://github.com/EVolgina/kuber-2.3/blob/main/cm.yaml)
 - Решить возникшую проблему с помощью ConfigMap.
 - Продемонстрировать, что pod стартовал и оба конейнера работают.
-- Сделать простую веб-страницу и подключить её к Nginx с помощью ConfigMap. Подключить Service и показать вывод curl или в браузере.[webpage](https://github.com/EVolgina/kuber-2.3/blob/main/webpage.html). 
+- Сделать простую веб-страницу и подключить её к Nginx с помощью ConfigMap. Подключить Service и показать вывод curl или в браузере.[webpage](https://github.com/EVolgina/kuber-2.3/blob/main/webpage.html). [nginx](https://github.com/EVolgina/kuber-2.3/blob/main/ng.yaml)
 - Предоставить манифесты, а также скриншоты или вывод необходимых команд.
 ```
 vagrant@vagrant:~/kube/zd8$ kubectl get deployment
