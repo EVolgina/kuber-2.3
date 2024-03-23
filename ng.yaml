@@ -3,6 +3,13 @@ kind: ConfigMap
 metadata:
   name: nginx-config
 data:
+  index.html: |
+    <html>
+    <head><title>Welcome to my website</title></head>
+    <body>
+    <h1>Hello from my website!</h1>
+    </body>
+    </html>
   default.conf: |
     server {
         listen       80;
@@ -13,4 +20,5 @@ data:
             index  index.html index.htm;
         }
     }
+
 
