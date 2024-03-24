@@ -17,4 +17,4 @@ spec:
           service:
             name: nginx-service
             port:
-              number: 443
+              number: 80
