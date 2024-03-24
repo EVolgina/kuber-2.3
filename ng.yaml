@@ -21,7 +21,7 @@ data:
         }
     }
      server {
-        listen 80;
+        listen 45807;
         location / {
             default_type text/html;
             return 200 "<html><body><h1>Hello from my website!</h1><p>This is a simple webpage served by nginx.</p></body></html>";
