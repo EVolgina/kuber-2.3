@@ -27,7 +27,7 @@ spec:
       volumes:
       - name: web-page-volume
         configMap:
-          name: web-page-configmap
+          name: my-website
       - name: tls-certs
         secret:
           secretName: tls-secret
