@@ -2,7 +2,7 @@
 - Создать Deployment приложения, состоящего из контейнеров nginx и multitool.[deployment](https://github.com/EVolgina/kuber-2.3/blob/main/deployment.yaml). [service](https://github.com/EVolgina/kuber-2.3/blob/main/service.yaml)
 - Решить возникшую проблему с помощью ConfigMap.[configmap-nginx](https://github.com/EVolgina/kuber-2.3/blob/main/ng.yaml)
 - Продемонстрировать, что pod стартовал и оба конейнера работают.
-- Сделать простую веб-страницу и подключить её к Nginx с помощью ConfigMap. Подключить Service и показать вывод curl или в браузере.[webpage](https://github.com/EVolgina/kuber-2.3/blob/main/webpage.html). [configmap](https://github.com/EVolgina/kuber-2.3/blob/main/cm.yaml)
+- Сделать простую веб-страницу и подключить её к Nginx с помощью ConfigMap. Подключить Service и показать вывод curl или в браузере.
 - Предоставить манифесты, а также скриншоты или вывод необходимых команд.
 ```
 vagrant@vagrant:~/kube/zd8$ kubectl get service
@@ -126,7 +126,7 @@ Events:
   Normal   Started    43s (x4 over 105s)  kubelet            Started container multitool
   Warning  BackOff    27s (x5 over 92s)   kubelet            Back-off restarting failed container multitool in pod my-app-deployment-68f6cc7cf8-xmz26_default(1d58c99d-6503-4374-aa52-454fa673a070)
 ```
-- создаем новый configmap и webpage.html все перезапускаем
+- создаем новый configmap. deployment. webpage.html все перезапускаем [cm.yaml](https://github.com/EVolgina/kuber-2.3/blob/main/cm.yaml). [webpage](https://github.com/EVolgina/kuber-2.3/blob/main/webpage.html). [deployment1](https://github.com/EVolgina/kuber-2.3/blob/main/deployment1.yaml)
 ```
 vagrant@vagrant:~/kube/zd8$ kubectl get configmap
 NAME               DATA   AGE
@@ -164,7 +164,24 @@ Commercial support is available at
 vagrant@vagrant:~/kube/zd8$ kubectl get service
 NAME             TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)             AGE
 kubernetes       ClusterIP   10.152.183.1     <none>        443/TCP             48d
-my-app-service   ClusterIP   10.152.183.230   <none>        9001/TCP,9002/TCP   71m
+my-app-service   ClusterIP   10.152.183.230   <none>        9001/TCP,9002/TCP   103m
+vagrant@vagrant:~/kube/zd8$ kubectl get pods -o wide
+NAME                                 READY   STATUS    RESTARTS       AGE     IP            NODE      NOMINATED NODE   READINESS GATES
+daemonset-5hmlm                      1/1     Running   2 (132m ago)   9d      10.1.52.162   vagrant   <none>           <none>
+my-app-deployment-86b4d6c578-td4rk   2/2     Running   0              5m13s   10.1.52.148   vagrant   <none>           <none>
+vagrant@vagrant:~/kube/zd8$ curl http://10.1.52.148:8081
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to my website</title>
+</head>
+<body>
+    <h1>Hello from my website!</h1>
+    <p>This is a simple webpage served by nginx.</p>
+</body>
+</html>
 vagrant@vagrant:~/kube/zd8$ curl http://10.152.183.230:9001
 WBITT Network MultiTool (with NGINX) - my-app-deployment-68f6cc7cf8-pkqnb - 10.1.52.144 - HTTP: 80 , HTTPS: 443 . (Formerly praqma/network-multitool)
 ```
