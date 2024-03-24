@@ -189,7 +189,20 @@ WBITT Network MultiTool (with NGINX) - my-app-deployment-68f6cc7cf8-pkqnb - 10.1
   
 # Задание 2. Создать приложение с вашей веб-страницей, доступной по HTTPS
 - Создать Deployment приложения, состоящего из Nginx.
-- Создать собственную веб-страницу и подключить её как ConfigMap к приложению.
+- Создать собственную веб-страницу и подключить её как ConfigMap к приложению. 
 - Выпустить самоподписной сертификат SSL. Создать Secret для использования сертификата.
 - Создать Ingress и необходимый Service, подключить к нему SSL в вид. Продемонстировать доступ к приложению по HTTPS.
 - Предоставить манифесты, а также скриншоты или вывод необходимых команд.
+
+- оставляем  ConfigMap из 1 задания []()
+- выпускаем сертификат
+```
+vagrant@vagrant:~/kube/zd8$ vagrant@vagrant:~/kube/zd8$ openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout tls.key -out tls.crt -subj "/CN=my-nginx-service.default.svc"
+Generating a RSA private key
+.........................+++++
+................................................+++++
+writing new private key to 'tls.key'
+-----
+
+```
+ 
