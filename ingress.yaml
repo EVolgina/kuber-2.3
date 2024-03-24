@@ -5,10 +5,10 @@ metadata:
 spec:
   tls:
   - hosts:
-    - netology1.ru
+    - mysite.com
     secretName: tls-secret
   rules:
-  - host: netology1.ru
+  - host: mysite.com
     http:
       paths:
       - pathType: Prefix
