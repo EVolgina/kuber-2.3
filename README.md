@@ -185,16 +185,15 @@ vagrant@vagrant:~/kube/zd8$ curl http://10.1.52.148:8081
 vagrant@vagrant:~/kube/zd8$ curl http://10.152.183.230:9001
 WBITT Network MultiTool (with NGINX) - my-app-deployment-68f6cc7cf8-pkqnb - 10.1.52.144 - HTTP: 80 , HTTPS: 443 . (Formerly praqma/network-multitool)
 ```
-
-  
+ 
 # Задание 2. Создать приложение с вашей веб-страницей, доступной по HTTPS
-- Создать Deployment приложения, состоящего из Nginx.
+- Создать Deployment приложения, состоящего из Nginx.[deployment2](https://github.com/EVolgina/kuber-2.3/blob/main/deployment2.yaml)
 - Создать собственную веб-страницу и подключить её как ConfigMap к приложению. 
 - Выпустить самоподписной сертификат SSL. Создать Secret для использования сертификата.
-- Создать Ingress и необходимый Service, подключить к нему SSL в вид. Продемонстировать доступ к приложению по HTTPS.
+- Создать Ingress и необходимый Service, подключить к нему SSL в вид. Продемонстировать доступ к приложению по HTTPS.[ingress](https://github.com/EVolgina/kuber-2.3/blob/main/ingress.yaml)[service](https://github.com/EVolgina/kuber-2.3/blob/main/nginx-service.yaml)
 - Предоставить манифесты, а также скриншоты или вывод необходимых команд.
 
-- оставляем  ConfigMap из 1 задания []()
+- оставляем  ConfigMap из 1 задания [cm.yaml](https://github.com/EVolgina/kuber-2.3/blob/main/cm.yaml)
 - выпускаем сертификат
 ```
 vagrant@vagrant:~/kube/zd8$ vagrant@vagrant:~/kube/zd8$ openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout tls.key -out tls.crt -subj "/CN=my-nginx-service.default.svc"
@@ -203,6 +202,68 @@ Generating a RSA private key
 ................................................+++++
 writing new private key to 'tls.key'
 -----
-
+vagrant@vagrant:~/kube/zd8$ kubectl get service
+NAME             TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)             AGE
+kubernetes       ClusterIP   10.152.183.1     <none>        443/TCP             49d
+my-app-service   ClusterIP   10.152.183.230   <none>        9001/TCP,9002/TCP   9h
+nginx-service    ClusterIP   10.152.183.58    <none>        443/TCP             7h30m
+vagrant@vagrant:~/kube/zd8$ kubectl get ingress
+NAME            CLASS    HOSTS         ADDRESS     PORTS     AGE
+ingress         <none>   *                         80        28d
+nginx-ingress   public   netology.ru   127.0.0.1   80, 443   3h55m
+vagrant@vagrant:~/kube/zd8$ kubectl get deployment
+NAME                READY   UP-TO-DATE   AVAILABLE   AGE
+my-app-deployment   1/1     1            1           9h
+nginx-deployment    0/1     1            0           3h56m
+vagrant@vagrant:~/kube/zd8$ kubectl get configmap
+NAME               DATA   AGE
+kube-root-ca.crt   1      49d
+my-website         1      8h
+nginx-config       2      9h
+vagrant@vagrant:~/kube/zd8$ kubectl get pods
+NAME                                 READY   STATUS    RESTARTS      AGE
+daemonset-5hmlm                      1/1     Running   2 (10h ago)   9d
+my-app-deployment-86b4d6c578-td4rk   2/2     Running   0             8h
+nginx-deployment-6cc7bf97f9-nl82p    1/1     Running   0             29s
 ```
- 
+```
+vagrant@vagrant:~/kube/zd8$ nslookup nginx-service
+Server:         127.0.0.53
+Address:        127.0.0.53#53
+
+Non-authoritative answer:
+Name:   nginx-service
+Address: 10.152.183.58
+vagrant@vagrant:~/kube/zd8$ kubectl get ingresses
+NAME            CLASS    HOSTS        ADDRESS     PORTS     AGE
+ingress         <none>   *                        80        28d
+nginx-ingress   public   mysite.com   127.0.0.1   80, 443   88s
+vagrant@vagrant:~/kube/zd8$ nslookup mysite.com
+Server:         127.0.0.53
+Address:        127.0.0.53#53
+
+Non-authoritative answer:
+Name:   mysite.com
+Address: 10.1.52.191
+
+vagrant@vagrant:~/kube/zd8$ dig mysite.com
+
+; <<>> DiG 9.16.1-Ubuntu <<>> mysite.com
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 11262
+;; flags: qr rd ra; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 1
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 65494
+;; QUESTION SECTION:
+;mysite.com.                    IN      A
+
+;; ANSWER SECTION:
+mysite.com.             0       IN      A       10.1.52.191
+
+;; Query time: 0 msec
+;; SERVER: 127.0.0.53#53(127.0.0.53)
+;; WHEN: Sun Mar 24 16:29:49 UTC 2024
+;; MSG SIZE  rcvd: 55
+```
