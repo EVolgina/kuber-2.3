@@ -1,16 +1,30 @@
 # Задание 1. Создать Deployment приложения и решить возникшую проблему с помощью ConfigMap. Добавить веб-страницу
-- Создать Deployment приложения, состоящего из контейнеров nginx и multitool.[deployment](https://github.com/EVolgina/kuber-2.3/blob/main/deployment.yaml). [service](https://github.com/EVolgina/kuber-2.3/blob/main/service.yaml). [configmap](https://github.com/EVolgina/kuber-2.3/blob/main/cm.yaml)
-- Решить возникшую проблему с помощью ConfigMap.
+- Создать Deployment приложения, состоящего из контейнеров nginx и multitool.[deployment](https://github.com/EVolgina/kuber-2.3/blob/main/deployment.yaml). [service](https://github.com/EVolgina/kuber-2.3/blob/main/service.yaml)
+- Решить возникшую проблему с помощью ConfigMap.[configmap](https://github.com/EVolgina/kuber-2.3/blob/main/cm.yaml)
 - Продемонстрировать, что pod стартовал и оба конейнера работают.
 - Сделать простую веб-страницу и подключить её к Nginx с помощью ConfigMap. Подключить Service и показать вывод curl или в браузере.[webpage](https://github.com/EVolgina/kuber-2.3/blob/main/webpage.html). [nginx](https://github.com/EVolgina/kuber-2.3/blob/main/ng.yaml)
 - Предоставить манифесты, а также скриншоты или вывод необходимых команд.
 ```
-vagrant@vagrant:~/kube/zd8$ kubectl get deployment
-NAME              READY   UP-TO-DATE   AVAILABLE   AGE
-nginx-multitool   0/1     1            0           79s
 vagrant@vagrant:~/kube/zd8$ kubectl get service
-NAME              TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)             AGE
-nginx-multitool   ClusterIP   10.152.183.116   <none>        80/TCP              100s
+NAME             TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)             AGE
+kubernetes       ClusterIP   10.152.183.1     <none>        443/TCP             48d
+my-app-service   ClusterIP   10.152.183.230   <none>        9001/TCP,9002/TCP   19s
+vagrant@vagrant:~/kube/zd8$ kubectl get deployment
+NAME                READY   UP-TO-DATE   AVAILABLE   AGE
+my-app-deployment   0/1     1            0           52s
+vagrant@vagrant:~/kube/zd8$ kubectl get pods
+NAME                                 READY   STATUS    RESTARTS      AGE
+daemonset-5hmlm                      1/1     Running   2 (29m ago)   9d
+my-app-deployment-8579458565-jjmmn   1/2     Error     2 (40s ago)   62s
+-вносим изменения в deployment добавляем --
+volumeMounts:
+ - name: nginx-config
+   mountPath: /etc/nginx/conf.d
+volumes:
+ - name: nginx-config
+  configMap:
+  name: nginx-config
+- перзапускаем deployment и создаем configmap
 vagrant@vagrant:~/kube/zd8$ kubectl get configmap
 NAME               DATA   AGE
 kube-root-ca.crt   1      48d
