@@ -190,7 +190,7 @@ WBITT Network MultiTool (with NGINX) - my-app-deployment-68f6cc7cf8-pkqnb - 10.1
 - Создать Deployment приложения, состоящего из Nginx.[deployment2](https://github.com/EVolgina/kuber-2.3/blob/main/deployment2.yaml)
 - Создать собственную веб-страницу и подключить её как ConfigMap к приложению. 
 - Выпустить самоподписной сертификат SSL. Создать Secret для использования сертификата.
-- Создать Ingress и необходимый Service, подключить к нему SSL в вид. Продемонстировать доступ к приложению по HTTPS.[ingress](https://github.com/EVolgina/kuber-2.3/blob/main/ingress.yaml)[service](https://github.com/EVolgina/kuber-2.3/blob/main/nginx-service.yaml)
+- Создать Ingress и необходимый Service, подключить к нему SSL в вид. Продемонстировать доступ к приложению по HTTPS.[ingress](https://github.com/EVolgina/kuber-2.3/blob/main/ingress.yaml). [service](https://github.com/EVolgina/kuber-2.3/blob/main/nginx-service.yaml)
 - Предоставить манифесты, а также скриншоты или вывод необходимых команд.
 
 - оставляем  ConfigMap из 1 задания [cm.yaml](https://github.com/EVolgina/kuber-2.3/blob/main/cm.yaml)
