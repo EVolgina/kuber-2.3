@@ -203,55 +203,38 @@ Generating a RSA private key
 writing new private key to 'tls.key'
 -----
 vagrant@vagrant:~/kube/zd8$ kubectl get service
-NAME             TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)             AGE
-kubernetes       ClusterIP   10.152.183.1     <none>        443/TCP             49d
-my-app-service   ClusterIP   10.152.183.230   <none>        9001/TCP,9002/TCP   9h
-nginx-service    ClusterIP   10.152.183.58    <none>        443/TCP             7h30m
-vagrant@vagrant:~/kube/zd8$ kubectl get ingress
-NAME            CLASS    HOSTS         ADDRESS     PORTS     AGE
-ingress         <none>   *                         80        28d
-nginx-ingress   public   netology.ru   127.0.0.1   80, 443   3h55m
+NAME            TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)   AGE
+kubernetes      ClusterIP   10.96.0.1        <none>        443/TCP   75m
+nginx-service   ClusterIP   10.102.138.169   <none>        80/TCP    5m15s
+vvagrant@vagrant:~/nfs$ kubectl get ingresses
+NAME            CLASS    HOSTS        ADDRESS   PORTS     AGE
+nginx-ingress   <none>   mysite.com             80, 443   45m
 vagrant@vagrant:~/kube/zd8$ kubectl get deployment
-NAME                READY   UP-TO-DATE   AVAILABLE   AGE
-my-app-deployment   1/1     1            1           9h
-nginx-deployment    0/1     1            0           3h56m
+NAME               READY   UP-TO-DATE   AVAILABLE   AGE
+nginx-deployment   1/1     1            1           11m
 vagrant@vagrant:~/kube/zd8$ kubectl get configmap
 NAME               DATA   AGE
-kube-root-ca.crt   1      49d
-my-website         1      8h
-nginx-config       2      9h
+kube-root-ca.crt   1      76m
+nginx-config       1      8m40s
 vagrant@vagrant:~/kube/zd8$ kubectl get pods
-NAME                                 READY   STATUS    RESTARTS      AGE
-daemonset-5hmlm                      1/1     Running   2 (10h ago)   9d
-my-app-deployment-86b4d6c578-td4rk   2/2     Running   0             8h
-nginx-deployment-6cc7bf97f9-nl82p    1/1     Running   0             29s
+NAME                               READY   STATUS    RESTARTS   AGE
+nginx-deployment-576c6b7b6-scv2z   1/1     Running   0          12m
 ```
 ```
-vagrant@vagrant:~/kube/zd8$ nslookup nginx-service
-Server:         127.0.0.53
-Address:        127.0.0.53#53
-
-Non-authoritative answer:
-Name:   nginx-service
-Address: 10.152.183.58
-vagrant@vagrant:~/kube/zd8$ kubectl get ingresses
-NAME            CLASS    HOSTS        ADDRESS     PORTS     AGE
-ingress         <none>   *                        80        28d
-nginx-ingress   public   mysite.com   127.0.0.1   80, 443   88s
 vagrant@vagrant:~/kube/zd8$ nslookup mysite.com
 Server:         127.0.0.53
 Address:        127.0.0.53#53
 
 Non-authoritative answer:
 Name:   mysite.com
-Address: 10.1.52.191
+Address: 64.136.20.67
 
 vagrant@vagrant:~/kube/zd8$ dig mysite.com
 
 ; <<>> DiG 9.16.1-Ubuntu <<>> mysite.com
 ;; global options: +cmd
 ;; Got answer:
-;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 11262
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 64126
 ;; flags: qr rd ra; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 1
 
 ;; OPT PSEUDOSECTION:
@@ -260,10 +243,26 @@ vagrant@vagrant:~/kube/zd8$ dig mysite.com
 ;mysite.com.                    IN      A
 
 ;; ANSWER SECTION:
-mysite.com.             0       IN      A       10.1.52.191
+mysite.com.             275     IN      A       64.136.20.67
 
-;; Query time: 0 msec
+;; Query time: 4 msec
 ;; SERVER: 127.0.0.53#53(127.0.0.53)
-;; WHEN: Sun Mar 24 16:29:49 UTC 2024
+;; WHEN: Sat Apr 20 08:50:59 UTC 2024
 ;; MSG SIZE  rcvd: 55
+vagrant@vagrant:~/nfs$ kubectl describe ingress nginx-ingress
+Name:             nginx-ingress
+Labels:           <none>
+Namespace:        default
+Address:
+Ingress Class:    <none>
+Default backend:  <default>
+TLS:
+  nginx-ssl terminates mysite.com
+Rules:
+  Host        Path  Backends
+  ----        ----  --------
+  mysite.com
+              /   nginx-service:80 (10.244.0.3:80)
+Annotations:  <none>
+Events:       <none>
 ```
