@@ -6,15 +6,27 @@ spec:
   tls:
   - hosts:
     - mysite.com
-    secretName: tls-secret
+    secretName: nginx-ssl
   rules:
   - host: mysite.com
     http:
       paths:
-      - pathType: Prefix
-        path: "/"
+      - path: /
+        pathType: Prefix
         backend:
           service:
             name: nginx-service
             port:
               number: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-service
+spec:
+  selector:
+    app: nginx
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 80
